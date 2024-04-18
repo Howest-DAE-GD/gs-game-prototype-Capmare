@@ -1,10 +1,30 @@
 #include "pch.h"
 #include "Game.h"
+#include "character.h"
+#include <random>
 
 Game::Game( const Window& window ) 
 	:BaseGame{ window }
 {
 	Initialize();
+
+
+	std::random_device                  rand_dev;
+	std::mt19937                        generator(rand_dev());
+	std::uniform_int_distribution<int>  enemies(5, 30);
+
+	std::uniform_int_distribution<int>  wH(0, window.height);
+	std::uniform_int_distribution<int>  wW(0, window.width);
+	for (size_t i = 0; i < enemies(generator); ++i)
+	{
+		Enemies.push_back(new character());
+	}
+	for (size_t i = 0; i < Enemies.size(); ++i)
+	{
+		Enemies.at(i)->XLoc = wH(generator);
+		Enemies.at(i)->YLoc = wW(generator);
+		Enemies.at(i)->Speed = 1;
+	}
 }
 
 Game::~Game( )
@@ -14,17 +34,23 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
-	
+	Player = new character();
 }
 
 void Game::Cleanup( )
 {
+	delete Player;
+	for (size_t i = 0; i < Enemies.size(); i++)
+	{
+		delete Enemies.at(i);
+	}
 }
 
 void Game::Update( float elapsedSec )
 {
+	Player->Update(elapsedSec);
 	// Check keyboard state
-	//const Uint8 *pStates = SDL_GetKeyboardState( nullptr );
+	const uint8_t *pStates = SDL_GetKeyboardState( nullptr );
 	//if ( pStates[SDL_SCANCODE_RIGHT] )
 	//{
 	//	std::cout << "Right arrow key is down\n";
@@ -33,11 +59,21 @@ void Game::Update( float elapsedSec )
 	//{
 	//	std::cout << "Left and up arrow keys are down\n";
 	//}
+	Player->Move(pStates);
+	for (size_t i = 0; i < Enemies.size(); i++)
+	{
+		Enemies.at(i)->MoveToPlayer(Point2f(Player->XLoc, Player->YLoc));
+	}
 }
 
 void Game::Draw( ) const
 {
 	ClearBackground( );
+	Player->Draw();
+	for (size_t i = 0; i < Enemies.size(); i++)
+	{
+		Enemies.at(i)->Draw();
+	}
 }
 
 void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
@@ -47,6 +83,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 
 void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
 {
+	
 	//std::cout << "KEYUP event: " << e.keysym.sym << std::endl;
 	//switch ( e.keysym.sym )
 	//{
@@ -66,6 +103,7 @@ void Game::ProcessKeyUpEvent( const SDL_KeyboardEvent& e )
 void Game::ProcessMouseMotionEvent( const SDL_MouseMotionEvent& e )
 {
 	//std::cout << "MOUSEMOTION event: " << e.x << ", " << e.y << std::endl;
+	Player->MousePos = Point2f(e.x,e.y);
 }
 
 void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
@@ -83,6 +121,7 @@ void Game::ProcessMouseDownEvent( const SDL_MouseButtonEvent& e )
 	//	std::cout << " middle button " << std::endl;
 	//	break;
 	//}
+	Player->Attack();
 	
 }
 
@@ -101,6 +140,7 @@ void Game::ProcessMouseUpEvent( const SDL_MouseButtonEvent& e )
 	//	std::cout << " middle button " << std::endl;
 	//	break;
 	//}
+	Player->bIsShoots = false;
 }
 
 void Game::ClearBackground( ) const

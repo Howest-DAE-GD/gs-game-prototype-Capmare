@@ -1,5 +1,9 @@
 #pragma once
 #include "BaseGame.h"
+#include <vector>
+
+class character;
+
 class Game : public BaseGame
 {
 public:
@@ -27,4 +31,7 @@ private:
 	void Initialize();
 	void Cleanup( );
 	void ClearBackground( ) const;
+
+	character* Player;
+	std::vector<character*> Enemies;
 };
