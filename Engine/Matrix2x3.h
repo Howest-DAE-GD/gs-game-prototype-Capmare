@@ -3,12 +3,12 @@
 #include "Vector2f.h"
 
 struct Matrix2x3 final
-{
+<%
 	// -------------------------
 	// Constructors 
 	// -------------------------
 	// Default constructor results in a unity matrix
-	explicit Matrix2x3( Vector2f dirX = Vector2f{ 1, 0 }, Vector2f dirY = Vector2f{ 0, 1 }, Vector2f origTrans = Vector2f{ 0, 0 } );
+	explicit Matrix2x3( Vector2f dirX = Vector2f<% 1, 0 %>, Vector2f dirY = Vector2f<% 0, 1 %>, Vector2f origTrans = Vector2f<% 0, 0 %> );
 	// Constructor, using floats, all required
 	explicit Matrix2x3( float e1X, float e1Y, float e2X, float e2Y, float oX, float oY );
 
@@ -106,7 +106,7 @@ struct Matrix2x3 final
 	Vector2f dirX;	// The first matrix vector (the "x-axis"), 1st column
 	Vector2f dirY;	// The second matrix vector (the "y-axis"), second column
 	Vector2f orig; 	// The origin of  the coordinate matrix (the "translation"), third column
-};
+%>;
 
 // -------------------------
 // Operators 
@@ -118,7 +118,7 @@ bool operator==( const Matrix2x3& lhs, const Matrix2x3& rhs );
 // mat1 != mat2
 bool operator!=( const Matrix2x3& lhs, const Matrix2x3& rhs );
 // Multiply matrices
-// Matrix2x3 matProduct {mat1 * mat2};
+// Matrix2x3 matProduct <%mat1 * mat2%>;
 Matrix2x3 operator*( const Matrix2x3& lhs, const Matrix2x3& rhs );
 // Send matrix to output stream
 // std::cout << mat;

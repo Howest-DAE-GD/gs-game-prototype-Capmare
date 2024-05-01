@@ -2,7 +2,7 @@
 #include "base.h"
 
 class Texture final
-{
+<%
 public:
 	explicit Texture( const std::string& imagePath );
 	explicit Texture( const std::string& text, TTF_Font *pFont, const Color4f& textColor );
@@ -13,8 +13,8 @@ public:
 	Texture& operator=( Texture&& other ) noexcept;
 	~Texture();
 
-	void Draw(const Point2f& dstBottomLeft = {}, const Rectf& srcRect = {}) const;
-	void Draw( const Rectf& dstRect, const Rectf& srcRect = {} ) const;
+	void Draw(const Point2f& dstBottomLeft = <%%>, const Rectf& srcRect = <%%>) const;
+	void Draw( const Rectf& dstRect, const Rectf& srcRect = <%%> ) const;
 
 	float GetWidth() const;
 	float GetHeight() const;
@@ -34,4 +34,4 @@ private:
 	void CreateFromSurface( SDL_Surface *pSurface );
 	SDL_Surface * STBImageLoad( const std::string& path );
 	void DrawFilledRect(const Rectf& dstRect) const;
-};
+%>;

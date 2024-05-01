@@ -3,9 +3,10 @@
 #include <vector>
 
 class character;
+class enemy;
 
 class Game : public BaseGame
-{
+<%
 public:
 	explicit Game( const Window& window );
 	Game(const Game& other) = delete;
@@ -33,5 +34,5 @@ private:
 	void ClearBackground( ) const;
 
 	character* Player;
-	std::vector<character*> Enemies;
-};
+	std::vector<enemy*> Enemies;
+%>;

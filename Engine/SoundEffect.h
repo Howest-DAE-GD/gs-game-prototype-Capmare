@@ -2,7 +2,7 @@
 #include <string>
 class Mix_Chunk;
 class SoundEffect final
-{
+<%
 public:
 	explicit SoundEffect( const std::string& path );
 	~SoundEffect( );
@@ -21,4 +21,4 @@ public:
 
 private:
 	Mix_Chunk* m_pMixChunk;
-};
+%>;

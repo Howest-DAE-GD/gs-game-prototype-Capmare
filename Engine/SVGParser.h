@@ -4,7 +4,7 @@
 #include <sstream>
 #include "structs.h"
 class SVGParser final
-{
+<%
 public:
 	// The only function to be called
 	static bool GetVerticesFromSvgFile(const std::string& filePath, std::vector<std::vector<Point2f>> &vertices);
@@ -46,4 +46,4 @@ private:
 
 	// Reads next point, given only the new y coordinate 
 	static Point2f NextSvgCoordY(std::stringstream& ssRef, Point2f& cursor, char cmd, bool isOpen);	
-};
+%>;

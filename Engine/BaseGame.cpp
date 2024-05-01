@@ -5,23 +5,23 @@
 #include "BaseGame.h"
 
 BaseGame::BaseGame(const Window& window)
-	: m_Window{ window }
-	, m_Viewport{ 0,0,window.width,window.height }
-	, m_pWindow{ nullptr }
-	, m_pContext{ nullptr }
-	, m_Initialized{ false }
-	, m_MaxElapsedSeconds{ 0.1f }
-{
+	: m_Window<% window %>
+	, m_Viewport<% 0,0,window.width,window.height %>
+	, m_pWindow<% nullptr %>
+	, m_pContext<% nullptr %>
+	, m_Initialized<% false %>
+	, m_MaxElapsedSeconds<% 0.1f %>
+<%
 	InitializeGameEngine();
-}
+%>
 
 BaseGame::~BaseGame()
-{
+<%
 	CleanupGameEngine();
-}
+%>
 
 void BaseGame::InitializeGameEngine()
-{
+<%
 	// disable console close window button
 #ifdef _WIN32
 	HWND hwnd = GetConsoleWindow();
@@ -31,10 +31,10 @@ void BaseGame::InitializeGameEngine()
 
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO /*| SDL_INIT_AUDIO*/) < 0)
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling SDL_Init: " << SDL_GetError() << std::endl;
 		return;
-	}
+	%>
 
 	// Use OpenGL 2.1
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -49,33 +49,33 @@ void BaseGame::InitializeGameEngine()
 		int(m_Window.height),
 		SDL_WINDOW_OPENGL);
 	if (m_pWindow == nullptr)
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling SDL_CreateWindow: " << SDL_GetError() << std::endl;
 		return;
-	}
+	%>
 
 	// Create OpenGL context 
 	m_pContext = SDL_GL_CreateContext(m_pWindow);
 	if (m_pContext == nullptr)
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling SDL_GL_CreateContext: " << SDL_GetError() << std::endl;
 		return;
-	}
+	%>
 
 	// Set the swap interval for the current OpenGL context,
 	// synchronize it with the vertical retrace
 	if (m_Window.isVSyncOn)
-	{
+	<%
 		if (SDL_GL_SetSwapInterval(1) < 0)
-		{
+		<%
 			std::cerr << "BaseGame::Initialize( ), error when calling SDL_GL_SetSwapInterval: " << SDL_GetError() << std::endl;
 			return;
-		}
-	}
+		%>
+	%>
 	else
-	{
+	<%
 		SDL_GL_SetSwapInterval(0);
-	}
+	%>
 
 	// Set the Projection matrix to the identity matrix
 	glMatrixMode(GL_PROJECTION);
@@ -100,56 +100,56 @@ void BaseGame::InitializeGameEngine()
 	/*
 	int imgFlags = IMG_INIT_PNG;
 	if ( !( IMG_Init( imgFlags ) & imgFlags ) )
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling IMG_Init: " << IMG_GetError( ) << std::endl;
 		return;
-	}
+	%>
 	*/
 
 	// Initialize SDL_ttf
 	if (TTF_Init() == -1)
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling TTF_Init: " << TTF_GetError() << std::endl;
 		return;
-	}
+	%>
 
 	//Initialize SDL_mixer
 	
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-	{
+	<%
 		std::cerr << "BaseGame::Initialize( ), error when calling Mix_OpenAudio: " << Mix_GetError() << std::endl;
 		return;
-	}
+	%>
 	
 
 	m_Initialized = true;
-}
+%>
 
 void BaseGame::Run()
-{
+<%
 	if (!m_Initialized)
-	{
+	<%
 		std::cerr << "BaseGame::Run( ), BaseGame not correctly initialized, unable to run the BaseGame\n";
 		std::cin.get();
 		return;
-	}
+	%>
 
 	// Main loop flag
-	bool quit{ false };
+	bool quit<% false %>;
 
 	// Set start time
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 
 	//The event loop
-	SDL_Event e{};
+	SDL_Event e<%%>;
 	while (!quit)
-	{
+	<%
 		// Poll next event from queue
 		while (SDL_PollEvent(&e) != 0)
-		{
+		<%
 			// Handle the polled event
 			switch (e.type)
-			{
+			<%
 			case SDL_QUIT:
 				quit = true;
 				break;
@@ -171,11 +171,11 @@ void BaseGame::Run()
 				e.button.y = int(m_Window.height) - e.button.y;
 				this->ProcessMouseUpEvent(e.button);
 				break;
-			}
-		}
+			%>
+		%>
 
 		if (!quit)
-		{
+		<%
 			// Get current time
 			std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
 
@@ -196,12 +196,12 @@ void BaseGame::Run()
 
 			// Update screen: swap back and front buffer
 			SDL_GL_SwapWindow(m_pWindow);
-		}
-	}
-}
+		%>
+	%>
+%>
 
 void BaseGame::CleanupGameEngine()
-{
+<%
 	SDL_GL_DeleteContext(m_pContext);
 
 	SDL_DestroyWindow(m_pWindow);
@@ -219,4 +219,4 @@ void BaseGame::CleanupGameEngine()
 	EnableMenuItem(hmenu, SC_CLOSE, MF_ENABLED);
 #endif
 
-}
+%>

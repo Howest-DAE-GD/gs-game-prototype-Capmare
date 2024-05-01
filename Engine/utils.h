@@ -3,8 +3,8 @@
 #include "Vector2f.h"
 
 namespace utils
-{
-	const float g_Pi{ 3.1415926535f };
+<%
+	const float g_Pi<% 3.1415926535f %>;
 
 #pragma region OpenGLDrawFunctionality
 
@@ -51,11 +51,11 @@ namespace utils
 
 #pragma region CollisionFunctionality
 	struct HitInfo
-	{
+	<%
 		float lambda;
 		Point2f intersectPoint;
 		Vector2f normal;
-	};
+	%>;
 
 	float GetDistance(float x1, float y1, float x2, float y2);
 	float GetDistance(const Point2f& p1, const Point2f& p2);
@@ -83,4 +83,4 @@ namespace utils
 
 #pragma endregion CollisionFunctionality
 
-}
+%>

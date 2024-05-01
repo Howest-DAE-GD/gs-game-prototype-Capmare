@@ -2,7 +2,7 @@
 #include "structs.h"
 
 struct Vector2f final
-{
+<%
 	// -------------------------
 	// Constructors 
 	// -------------------------
@@ -81,7 +81,7 @@ struct Vector2f final
 	// -------------------------
 	float x;
 	float y;
-};
+%>;
 // -------------------------
 // Non member operators
 // -------------------------

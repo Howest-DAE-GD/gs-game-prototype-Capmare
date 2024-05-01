@@ -5,7 +5,7 @@
 
 
 class BaseGame
-{
+<%
 public:
 	explicit BaseGame( const Window& window );
 	BaseGame( const BaseGame& other ) = delete;
@@ -17,40 +17,40 @@ public:
 	void Run( );
 
 	virtual void Update(float elapsedSec)
-	{
+	<%
 		
-	}
+	%>
 	virtual void Draw() const
-	{
+	<%
 		
-	}
+	%>
 
 	// Event handling
 	virtual void ProcessKeyDownEvent(const SDL_KeyboardEvent& e)
-	{
+	<%
 		
-	}
+	%>
 	virtual void ProcessKeyUpEvent(const SDL_KeyboardEvent& e)
-	{
+	<%
 		
-	}
+	%>
 	virtual void ProcessMouseMotionEvent(const SDL_MouseMotionEvent& e)
-	{
+	<%
 		
-	}
+	%>
 	virtual void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
-	{
+	<%
 		
-	}
+	%>
 	virtual void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
-	{
+	<%
 		
-	}
+	%>
 
 	const Rectf& GetViewPort() const
-	{
+	<%
 		return m_Viewport;
-	}
+	%>
 
 private:
 	// DATA MEMBERS
@@ -69,4 +69,4 @@ private:
 	// FUNCTIONS
 	void InitializeGameEngine( );
 	void CleanupGameEngine( );
-};
+%>;

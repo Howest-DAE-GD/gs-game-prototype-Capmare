@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 class SoundStream final
-{
+<%
 public:
 	explicit SoundStream( const std::string& path );
 	~SoundStream( );
@@ -21,4 +21,4 @@ public:
 
 private:
 	Mix_Music *m_pMixMusic;
-};
+%>;
